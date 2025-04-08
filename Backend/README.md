@@ -67,3 +67,60 @@ The request body must be in JSON format and include the following fields:
 ## Notes
 - Ensure that the request body adheres to the specified format to avoid validation errors.
 - The JWT token can be used for authenticating subsequent requests.
+
+## User Login API
+## Endpoint
+POST /users/login
+
+## Description
+This endpoint allows an existing user to log in by providing their email and password. Upon successful authentication, a JSON Web Token (JWT) is returned.
+
+## Request Body
+The request body must be in JSON format and include the following fields:
+
+- email: A string representing the user's email address (must be a valid email format).
+- password: A string representing the user's password.
+
+## Example Request
+{
+  "email": "john.doe@example.com",
+  "password": "securepassword"
+}
+
+## Responses
+Success Response
+- Code: 200 OK
+- Content:
+{
+  "token": "JWT_TOKEN",
+  "user": {
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+}
+
+Error Responses
+- Code: 400 Bad Request
+- Content:
+{
+  "errors": [
+    {
+      "msg": "Invalid Email or Password",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+
+ - Code: 401 Unauthorized
+ - Content:
+ {
+  "error": "Authentication failed"
+}
+
+## Notes
+- Ensure that the email and password provided are correct.
+- The JWT token can be used for authenticating subsequent requests.
