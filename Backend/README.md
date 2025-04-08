@@ -124,3 +124,83 @@ Error Responses
 ## Notes
 - Ensure that the email and password provided are correct.
 - The JWT token can be used for authenticating subsequent requests.
+
+
+
+# User Profile API
+
+## Endpoint
+`GET /users/profile`
+
+## Description
+This endpoint retrieves the profile information of the authenticated user. Requires a valid JWT token.
+
+## Headers
+- `Authorization`: Bearer {JWT_TOKEN}
+
+## Responses
+
+### Success Response
+- **Code**: 200 OK
+- **Content**:
+```json
+{
+  "user": {
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+}
+```
+
+### Error Response
+- **Code**: 401 Unauthorized
+- **Content**:
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+## Notes
+- The JWT token must be included in the Authorization header.
+- Token must be prefixed with "Bearer ".
+
+---
+
+# User Logout API
+
+## Endpoint
+`POST /users/logout`
+
+## Description
+This endpoint logs out the user by invalidating their JWT token.
+
+## Headers
+- `Authorization`: Bearer {JWT_TOKEN}
+
+## Responses
+
+### Success Response
+- **Code**: 200 OK
+- **Content**:
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+
+### Error Response
+- **Code**: 401 Unauthorized
+- **Content**:
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+## Notes
+- The JWT token must be included in the Authorization header.
+- After logout, the token will be blacklisted and can't be used again.
