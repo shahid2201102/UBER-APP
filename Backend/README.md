@@ -302,3 +302,155 @@ The request body must be in JSON format and include the following fields:
 - Vehicle type must be one of the specified options: 'car', 'motorcycle', 'auto'
 - Vehicle capacity must be a positive integer
 - The email address must be unique in the system
+
+
+# Captain Login API
+
+## Endpoint
+`POST /captain/login`
+
+## Description
+This endpoint allows a registered captain to log in using their email and password. Upon successful authentication, a JSON Web Token (JWT) is returned.
+
+## Request Body
+The request body must be in JSON format and include the following fields:
+
+- `email`: A string representing the captain's email address (must be a valid email format)
+- `password`: A string representing the captain's password (minimum 6 characters)
+
+### Example Request
+```json
+{
+  "email": "john.captain@example.com",
+  "password": "securepassword"
+}
+```
+
+## Responses
+
+### Success Response
+- **Code**: 200 OK
+- **Content**:
+```json
+{
+  "token": "JWT_TOKEN",
+  "captain": {
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.captain@example.com",
+    "vehicle": {
+      "color": "Black",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+### Error Responses
+- **Code**: 400 Bad Request
+- **Content**:
+```json
+{
+  "errors": [
+    {
+      "msg": "Please enter a valid email",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+```
+
+- **Code**: 401 Unauthorized
+- **Content**:
+```json
+{
+  "message": "Invalid email or password"
+}
+```
+
+---
+
+# Captain Profile API
+
+## Endpoint
+`GET /captain/profile`
+
+## Description
+This endpoint retrieves the profile information of the authenticated captain. Requires a valid JWT token.
+
+## Headers
+- `Authorization`: Bearer {JWT_TOKEN}
+
+## Responses
+
+### Success Response
+- **Code**: 200 OK
+- **Content**:
+```json
+{
+  "captain": {
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.captain@example.com",
+    "vehicle": {
+      "color": "Black",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+### Error Response
+- **Code**: 401 Unauthorized
+- **Content**:
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+---
+
+# Captain Logout API
+
+## Endpoint
+`GET /captain/logout`
+
+## Description
+This endpoint logs out the captain by invalidating their JWT token.
+
+## Headers
+- `Authorization`: Bearer {JWT_TOKEN}
+
+## Responses
+
+### Success Response
+- **Code**: 201 Created
+- **Content**:
+```json
+{
+  "message": "Logout successfully"
+}
+```
+
+### Error Response
+- **Code**: 401 Unauthorized
+- **Content**:
+```json
+{
+  "message": "Unauthorized"
+}
+```
+
+## Notes
+- The JWT token must be included in the Authorization header
+- After logout, the token will be blacklisted and can't be used again
