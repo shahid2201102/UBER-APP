@@ -204,3 +204,101 @@ This endpoint logs out the user by invalidating their JWT token.
 ## Notes
 - The JWT token must be included in the Authorization header.
 - After logout, the token will be blacklisted and can't be used again.
+
+
+
+
+# Captain Registration API
+
+## Endpoint
+`POST /captain/register`
+
+## Description
+This endpoint allows a new captain to register by providing their personal details and vehicle information. Upon successful registration, the captain account is created.
+
+## Request Body
+The request body must be in JSON format and include the following fields:
+
+- `fullname`: An object containing:
+  - `firstname`: A string representing the captain's first name (minimum 3 characters)
+  - `lastname`: A string representing the captain's last name (optional)
+- `email`: A string representing the captain's email address (must be a valid email format)
+- `password`: A string representing the captain's password (minimum 6 characters)
+- `vehicle`: An object containing:
+  - `color`: A string representing the vehicle's color (minimum 3 characters)
+  - `plate`: A string representing the vehicle's license plate number (minimum 3 characters)
+  - `capacity`: An integer representing the vehicle's passenger capacity (minimum 1)
+  - `vehicleType`: A string that must be one of: 'car', 'motorcycle', 'auto'
+
+### Example Request
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.captain@example.com",
+  "password": "securepassword",
+  "vehicle": {
+    "color": "Black",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+## Responses
+
+### Success Response
+- **Code**: 201 Created
+- **Content**:
+```json
+{
+  "message": "Captain registered successfully",
+  "captain": {
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.captain@example.com",
+    "vehicle": {
+      "color": "Black",
+      "plate": "ABC123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+### Error Responses
+- **Code**: 400 Bad Request
+- **Content**:
+```json
+{
+  "errors": [
+    {
+      "msg": "Firstname must be at least 3 characters long",
+      "param": "fullname.firstname",
+      "location": "body"
+    },
+    {
+      "msg": "Please enter a valid email",
+      "param": "email",
+      "location": "body"
+    },
+    {
+      "msg": "Vehicle type must be either car, motorcycle or auto",
+      "param": "vehicle.vehicleType",
+      "location": "body"
+    }
+  ]
+}
+```
+
+## Notes
+- All fields except `lastname` are required
+- Vehicle type must be one of the specified options: 'car', 'motorcycle', 'auto'
+- Vehicle capacity must be a positive integer
+- The email address must be unique in the system
