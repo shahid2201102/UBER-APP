@@ -13,7 +13,7 @@ const CaptainSignup = () => {
     const submitHandler = (e)=>{
         e.preventDefault();
         setUserData({
-            username: {
+            fullName: {
                 firstName: firstName,
                 lastName
             },
@@ -33,7 +33,7 @@ const CaptainSignup = () => {
             <img className='w-20 mb-3' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSVCO4w_adxK32rCXFeKq3_NbLcR9b_js14w&s" alt=""></img>
                 <form onSubmit={(e)=>{
                     submitHandler(e)}}>
-                    <h3 className='text-lg font-medium mb-2'>What's your name</h3>
+                    <h3 className='text-lg w-full font-medium mb-2'>What's our Captain's name</h3>
                     <div className='flex gap-4 mb-6'>
                         <input 
                         required
@@ -54,7 +54,7 @@ const CaptainSignup = () => {
                         type="text" 
                         placeholder='Last name' />
                     </div>
-                    <h3 className='text-lg font-medium mb-2'>What's your email</h3>
+                    <h3 className='text-lg font-medium mb-2'>What's our Captain's email</h3>
                     <input 
                     required
                     value={email}
