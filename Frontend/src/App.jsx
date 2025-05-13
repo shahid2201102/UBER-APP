@@ -9,6 +9,8 @@ import CaptainSignup from './pages/CaptainSignup'
 import UserLogout from './pages/UserLogout'
 import { UserDataContext } from './context/UserContext'
 import UserProtectWrapper from './pages/UserProtectWrapper'
+import CaptainHome from './pages/CaptainHome'
+import CaptainProtectWrapper from './pages/CaptainProtectWrapper'
 
 
 
@@ -29,6 +31,11 @@ const App = () => {
           <UserProtectWrapper>
               <UserLogout/>
           </UserProtectWrapper>} />
+        <Route path='/captain-home' element={
+          <CaptainProtectWrapper>
+            <CaptainHome/>
+          </CaptainProtectWrapper>
+        } />
       </Routes>
   )
 }
