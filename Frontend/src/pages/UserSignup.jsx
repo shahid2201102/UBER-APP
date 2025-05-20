@@ -80,7 +80,7 @@ const UserSignup = () => {
                     }}
                     className='bg-[#eeeeee] mb-6 rounded px-4 py-2 border w-full text-lg placeholder:text-base' 
                     type="email" 
-                    placeholder='email@exampple.com' />
+                    placeholder='email@example.com' />
                     <h3 className='text-lg font-medium'>Enter Password</h3>
                     <input 
                     required 
@@ -98,7 +98,7 @@ const UserSignup = () => {
                 </form>
             </div>
             <div>
-                <p className='text-[10px] leading-tight'>
+                <p className='text-[10px] mt-6 leading-tight'>
                 This site is protected bv reCAPTCHA and the <span className='underline'>Google Privacy 
                 Policy</span> and <span className='underline'>Terms of Service apply</span>.
                 </p>
