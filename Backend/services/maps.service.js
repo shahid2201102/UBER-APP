@@ -1,62 +1,27 @@
 const axios = require('axios');
 require('dotenv').config();
+const captainModel = require('../models/captain.model');
 
 module.exports.getAddressCoordinate = async (address) => {
+    const apiKey = process.env.GOOGLE_MAPS_API;
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apiKey}`;
+
     try {
-        if (!process.env.GOOGLE_MAPS_API) {
-            throw new Error('Google Maps API key is not configured');
-        }
-
-        // URL encode the address
-        const encodedAddress = encodeURIComponent(address);
-        
-        const response = await axios.get(
-            `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${process.env.GOOGLE_MAPS_API}`
-        );
-
-        // Log response for debugging
-        console.log('Google Maps API Response:', response.data);
-
-        if (response.data.status === 'ZERO_RESULTS') {
+        const response = await axios.get(url);
+        if (response.data.status === 'OK') {
+            const location = response.data.results[ 0 ].geometry.location;
             return {
-                success: false,
-                message: 'No results found for this address'
+                ltd: location.lat,
+                lng: location.lng
             };
+        } else {
+            throw new Error('Unable to fetch coordinates');
         }
-
-        if (response.data.status !== 'OK') {
-            return {
-                success: false,
-                message: `Geocoding failed: ${response.data.status}`
-            };
-        }
-
-        if (!response.data.results || response.data.results.length === 0) {
-            return {
-                success: false,
-                message: 'No coordinates found for this address'
-            };
-        }
-
-        const { lat, lng } = response.data.results[0].geometry.location;
-        
-        return {
-            success: true,
-            coordinates: {
-                latitude: lat,
-                longitude: lng
-            }
-        };
-
     } catch (error) {
-        console.error('Geocoding error:', error.message);
-        return {
-            success: false,
-            message: 'Failed to get coordinates',
-            details: error.message
-        };
+        console.error(error);
+        throw error;
     }
-};
+}
 
 
 module.exports.getDistanceTime = async (origin, destination) => {
@@ -102,4 +67,17 @@ module.exports.getAutoCompleteSuggestions = async (input) => {
         console.log(error);
         throw error;
     }
+}
+
+module.exports.getCaptainsInTheRadius = async (ltd, lng, radius) => {
+    // radius in km
+    const captains = await captainModel.find({
+        location: {
+            $geoWithin: {
+                $centerSphere: [ [ ltd, lng ], radius / 6371 ]
+            }
+        }
+    });
+
+    return captains;
 }
