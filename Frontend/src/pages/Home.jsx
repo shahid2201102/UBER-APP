@@ -11,8 +11,6 @@ import WaitingForDriver from '../components/WaitingForDriver';
 import { SocketContext } from '../context/SocketContext';
 import { UserDataContext } from '../context/UserContext';
 
-
-
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
@@ -45,13 +43,24 @@ const Home = () => {
 
     const {socket} = useContext(SocketContext)
     const { user } = useContext(UserDataContext)
+    const navigate = useNavigate()
 
     useEffect(() => {
-        console.log(user)
         socket.emit("join", {userType: "user", userId: user._id})
     }, [user])
 
-    const navigate = useNavigate()
+    socket.on('ride-confirmed', ride => {
+        setVehicleFound(false)
+        setWaitingForDriver(true)
+        setRide(ride)
+    })
+
+    socket.on('ride-started', ride => {
+        console.log(ride)
+        setWaitingForDriver(false)
+        navigate('/riding')
+        //navigate('/riding', { state: { ride } }) // Updated navigate to include ride data
+    })
 
 
     const handlePickupChange = async (e) => {
@@ -263,7 +272,7 @@ const Home = () => {
                     destination={destination}
                     fare={fare}
                     vehicleType={vehicleType}
-
+                   // passenger={passenger}
                     setConfirmRidePanel={setConfirmRidePanel} setVehicleFound={setVehicleFound} />
             </div>
             <div ref={vehicleFoundRef} className='fixed w-full z-10 bottom-0 translate-y-full bg-white px-3 py-6 pt-12'>
