@@ -14,6 +14,7 @@ import { UserDataContext } from '../context/UserContext';
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
+import LiveTracking from '../components/LiveTracking';
 
 
 
@@ -211,7 +212,7 @@ const Home = () => {
             <img className='w-16 absolute left-5 top-5' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"></img>
             <div className='h-screen w-screen'>
                { /* image for temporary use */ }
-                <img className='h-full w-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
+               <LiveTracking />
             </div>
             <div className=' flex flex-col justify-end h-screen absolute top-0 w-full'>
                 <div className='h-[30%] p-6 bg-white relative'>
