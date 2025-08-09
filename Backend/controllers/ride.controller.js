@@ -21,7 +21,7 @@ module.exports.createRide = async (req, res) => {
 
         console.log(pickupCoordinates)
 
-        const captainsInRadius = await mapService.getCaptainsInTheRadius(pickupCoordinates.ltd, pickupCoordinates.lng, 2);
+        const captainsInRadius = await mapService.getCaptainsInTheRadius(pickupCoordinates.ltd, pickupCoordinates.lng, 20); //TODO: change radius
 
         ride.otp = ""
 
